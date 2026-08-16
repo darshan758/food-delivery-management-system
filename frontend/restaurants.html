@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Restaurants - Foodie</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+
+    <header class="navbar">
+
+        <div class="logo">
+            Foodie
+        </div>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="restaurants.html">Restaurants</a>
+            <a href="orders.html">My Orders</a>
+            <a href="login.html">Login</a>
+        </nav>
+
+        <a href="cart.html" class="cart-btn">
+            🛒 Cart
+        </a>
+
+    </header>
+
+
+    <!-- Page -->
+
+    <main class="container">
+
+        <h1>Restaurants</h1>
+
+        <p class="page-description">
+            Discover the best restaurants near you.
+        </p>
+
+
+        <!-- Search -->
+
+        <div class="restaurant-search">
+
+            <input
+                type="text"
+                id="restaurantSearch"
+                placeholder="Search restaurants or cuisines..."
+            >
+
+        </div>
+
+
+        <!-- Filters -->
+
+        <div class="filters">
+
+            <button
+                class="filter-btn active"
+                onclick="filterRestaurants('all')"
+            >
+                All
+            </button>
+
+            <button
+                class="filter-btn"
+                onclick="filterRestaurants('rating')"
+            >
+                Rating 4+
+            </button>
+
+            <button
+                class="filter-btn"
+                onclick="filterRestaurants('pizza')"
+            >
+                Pizza
+            </button>
+
+            <button
+                class="filter-btn"
+                onclick="filterRestaurants('burger')"
+            >
+                Burger
+            </button>
+
+            <button
+                class="filter-btn"
+                onclick="filterRestaurants('biryani')"
+            >
+                Biryani
+            </button>
+
+        </div>
+
+
+        <!-- Sorting -->
+
+        <div class="sort-container">
+
+            <label for="sortRestaurants">
+                Sort by:
+            </label>
+
+            <select id="sortRestaurants">
+
+                <option value="default">
+                    Recommended
+                </option>
+
+                <option value="rating">
+                    Rating
+                </option>
+
+                <option value="delivery">
+                    Delivery Time
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- Restaurant Cards -->
+
+        <div
+            class="restaurant-grid"
+            id="allRestaurants"
+        >
+        </div>
+
+
+        <!-- No Results -->
+
+        <div
+            id="noResults"
+            class="no-results"
+            style="display: none;"
+        >
+
+            <h2>No restaurants found</h2>
+
+            <p>
+                Try searching for something else.
+            </p>
+
+        </div>
+
+    </main>
+
+
+    <footer>
+
+        <h2>Foodie</h2>
+
+        <p>
+            Your favourite food, delivered fast.
+        </p>
+
+        <p>
+            © 2026 Foodie. All rights reserved.
+        </p>
+
+    </footer>
+
+
+    <script src="css/js/restaurant.js"></script>
+
+</body>
+
+</html>

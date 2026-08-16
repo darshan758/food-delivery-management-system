@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>My Orders - Foodie</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+</head>
+
+<body>
+
+    <!-- Navbar -->
+
+    <header class="navbar">
+
+        <div class="logo">
+            Foodie
+        </div>
+
+        <nav>
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="restaurants.html">
+                Restaurants
+            </a>
+
+            <a
+                href="orders.html"
+                class="active-link"
+            >
+                My Orders
+            </a>
+
+            <a href="login.html">
+                Login
+            </a>
+
+        </nav>
+
+        <a
+            href="cart.html"
+            class="cart-btn"
+        >
+            🛒 Cart
+        </a>
+
+    </header>
+
+
+    <!-- Orders -->
+
+    <main class="container orders-page">
+
+        <div class="orders-header">
+
+            <div>
+
+                <h1>
+                    My Orders
+                </h1>
+
+                <p>
+                    Track your previous food orders.
+                </p>
+
+            </div>
+
+            <a
+                href="restaurants.html"
+                class="order-food-btn"
+            >
+                + Order Food
+            </a>
+
+        </div>
+
+
+        <!-- Orders Container -->
+
+        <div id="ordersContainer">
+
+            <!-- Orders generated using JavaScript -->
+
+        </div>
+
+
+        <!-- Empty Orders -->
+
+        <div
+            id="emptyOrders"
+            class="empty-orders"
+            style="display: none;"
+        >
+
+            <div class="empty-orders-icon">
+                📦
+            </div>
+
+            <h2>
+                No orders yet
+            </h2>
+
+            <p>
+                You haven't placed any orders.
+            </p>
+
+            <a
+                href="restaurants.html"
+                class="continue-shopping"
+            >
+                Start Ordering
+            </a>
+
+        </div>
+
+    </main>
+
+
+    <!-- Footer -->
+
+    <footer>
+
+        <h2>
+            Foodie
+        </h2>
+
+        <p>
+            Your favourite food, delivered fast.
+        </p>
+
+        <p>
+            © 2026 Foodie. All rights reserved.
+        </p>
+
+    </footer>
+
+
+    <script src="css/js/orders.js"></script>
+
+</body>
+
+</html>

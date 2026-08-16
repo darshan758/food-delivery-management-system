@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foodie - Online Food Delivery</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar">
+
+        <div class="logo">
+            Foodie
+        </div>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="restaurants.html">Restaurants</a>
+            <a href="orders.html">My Orders</a>
+            <a href="login.html">Login</a>
+        </nav>
+
+        <a href="cart.html" class="cart-btn">
+            🛒 Cart
+        </a>
+
+    </header>
+
+
+    <!-- Hero Section -->
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <h1>
+                Delicious food,
+                <span>delivered to you.</span>
+            </h1>
+
+            <p>
+                Discover the best restaurants and order your
+                favourite food from the comfort of your home.
+            </p>
+
+            <div class="search-box">
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search for food or restaurants..."
+                >
+
+                <button onclick="searchFood()">
+                    Search
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Categories -->
+    <section class="container">
+
+        <h2>What's on your mind?</h2>
+
+        <div class="categories">
+
+            <div class="category" onclick="filterCategory('Pizza')">
+                <div class="category-icon">🍕</div>
+                <h3>Pizza</h3>
+            </div>
+
+            <div class="category" onclick="filterCategory('Burger')">
+                <div class="category-icon">🍔</div>
+                <h3>Burger</h3>
+            </div>
+
+            <div class="category" onclick="filterCategory('Biryani')">
+                <div class="category-icon">🍛</div>
+                <h3>Biryani</h3>
+            </div>
+
+            <div class="category" onclick="filterCategory('Chinese')">
+                <div class="category-icon">🍜</div>
+                <h3>Chinese</h3>
+            </div>
+
+            <div class="category" onclick="filterCategory('Dessert')">
+                <div class="category-icon">🍰</div>
+                <h3>Desserts</h3>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Restaurants -->
+    <section class="container">
+
+        <div class="section-header">
+
+            <h2>Popular Restaurants</h2>
+
+            <a href="restaurants.html">
+                View All
+            </a>
+
+        </div>
+
+
+        <div class="restaurant-grid" id="restaurantContainer">
+
+            <!-- Restaurant cards will be created using JavaScript -->
+
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <h2>Foodie</h2>
+
+        <p>
+            Your favourite food, delivered fast.
+        </p>
+
+        <p>
+            © 2026 Foodie. All rights reserved.
+        </p>
+
+    </footer>
+
+
+    <script src="css/js/main.js"></script>
+
+</body>
+</html>
