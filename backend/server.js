@@ -1,4 +1,5 @@
 const express = require("express");
+const foodRoutes = require("./routes/foodRoutes");
 
 const cors = require("cors");
 
@@ -8,6 +9,9 @@ const db = require("./config/db");
 
 const restaurantRoutes =
     require("./routes/restaurantRoutes");
+
+    const authRoutes =
+    require("./routes/authRoutes");
 
 
 const app = express();
@@ -20,8 +24,18 @@ app.use(cors());
 app.use(express.json());
 
 app.use(
+    "/api/foods",
+    foodRoutes
+);
+
+app.use(
     "/api/restaurants",
     restaurantRoutes
+);
+
+app.use(
+    "/api/auth",
+    authRoutes
 );
 
 

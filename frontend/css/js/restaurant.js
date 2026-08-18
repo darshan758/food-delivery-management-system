@@ -1,68 +1,55 @@
-const restaurants = [
+const API_URL = "http://localhost:5000/api";
 
-    {
-        id: 1,
-        name: "Spice Garden",
-        cuisine: "Indian, Biryani",
-        rating: 4.5,
-        deliveryTime: 25,
-        image: "https://images.unsplash.com/photo-1585937421612-70a008356fbe"
-    },
+let restaurants = [];
 
-    {
-        id: 2,
-        name: "Pizza Paradise",
-        cuisine: "Pizza, Italian",
-        rating: 4.3,
-        deliveryTime: 30,
-        image: "https://images.unsplash.com/photo-1579751626657-72bc17010498"
-    },
+let currentFilter = "all";
 
-    {
-        id: 3,
-        name: "Burger House",
-        cuisine: "Burger, Fast Food",
-        rating: 4.4,
-        deliveryTime: 20,
-        image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd"
-    },
 
-    {
-        id: 4,
-        name: "Dragon Bowl",
-        cuisine: "Chinese, Asian",
-        rating: 4.2,
-        deliveryTime: 25,
-        image: "https://images.unsplash.com/photo-1552566626-52f8b828add9"
-    },
+// ================================
+// LOAD RESTAURANTS FROM API
+// ================================
 
-    {
-        id: 5,
-        name: "Royal Biryani",
-        cuisine: "Biryani, Indian",
-        rating: 4.7,
-        deliveryTime: 30,
-        image: "https://images.unsplash.com/photo-1563379091339-03246963d96c"
-    },
+async function loadRestaurants() {
 
-    {
-        id: 6,
-        name: "Burger Point",
-        cuisine: "Burger, Fast Food",
-        rating: 4.1,
-        deliveryTime: 18,
-        image: "https://images.unsplash.com/photo-1550547660-d9450f859349"
+    try {
+
+        const response =
+            await fetch(`${API_URL}/restaurants`);
+
+        if (!response.ok) {
+            throw new Error("Failed to load restaurants");
+        }
+
+        restaurants = await response.json();
+
+        displayRestaurants();
+
+    } catch (error) {
+
+        console.error(
+            "Error loading restaurants:",
+            error
+        );
+
+        const container =
+            document.getElementById("allRestaurants");
+
+        container.innerHTML = `
+            <p>
+                Unable to load restaurants.
+                Please make sure the backend is running.
+            </p>
+        `;
+
     }
-
-];
-
-
-let currentRestaurants = restaurants;
+}
 
 
-/* Display Restaurants */
+// ================================
+// DISPLAY RESTAURANTS
+// ================================
 
-function displayRestaurants(data) {
+function displayRestaurants() {
 
     const container =
         document.getElementById("allRestaurants");
@@ -70,210 +57,340 @@ function displayRestaurants(data) {
     const noResults =
         document.getElementById("noResults");
 
+    const searchInput =
+        document.getElementById("restaurantSearch");
 
-    container.innerHTML = "";
+
+    if (!container) {
+        return;
+    }
 
 
-    if (data.length === 0) {
+    const searchText =
+        searchInput
+            ? searchInput.value.toLowerCase().trim()
+            : "";
 
-        noResults.style.display = "block";
+
+    let filteredRestaurants =
+        restaurants.filter(restaurant => {
+
+            // Search
+
+            const matchesSearch =
+                restaurant.name
+                    .toLowerCase()
+                    .includes(searchText)
+
+                ||
+
+                restaurant.cuisine
+                    .toLowerCase()
+                    .includes(searchText);
+
+
+            if (!matchesSearch) {
+                return false;
+            }
+
+
+            // Filters
+
+            if (currentFilter === "rating") {
+
+                return Number(
+                    restaurant.rating
+                ) >= 4;
+
+            }
+
+
+            if (currentFilter === "pizza") {
+
+                return restaurant.cuisine
+                    .toLowerCase()
+                    .includes("pizza");
+
+            }
+
+
+            if (currentFilter === "burger") {
+
+                return restaurant.cuisine
+                    .toLowerCase()
+                    .includes("burger");
+
+            }
+
+
+            if (currentFilter === "biryani") {
+
+                return restaurant.cuisine
+                    .toLowerCase()
+                    .includes("biryani");
+
+            }
+
+
+            return true;
+
+        });
+
+
+    // ============================
+    // SORTING
+    // ============================
+
+    const sortValue =
+        document.getElementById(
+            "sortRestaurants"
+        )?.value;
+
+
+    if (sortValue === "rating") {
+
+        filteredRestaurants.sort(
+            (a, b) =>
+                Number(b.rating) -
+                Number(a.rating)
+        );
+
+    }
+
+
+    if (sortValue === "delivery") {
+
+        filteredRestaurants.sort(
+            (a, b) =>
+                Number(a.delivery_time) -
+                Number(b.delivery_time)
+        );
+
+    }
+
+
+    // ============================
+    // NO RESULTS
+    // ============================
+
+    if (filteredRestaurants.length === 0) {
+
+        container.innerHTML = "";
+
+        if (noResults) {
+            noResults.style.display = "block";
+        }
 
         return;
 
     }
 
 
-    noResults.style.display = "none";
+    if (noResults) {
+        noResults.style.display = "none";
+    }
 
 
-    data.forEach(restaurant => {
+    // ============================
+    // CREATE CARDS
+    // ============================
 
-        const card =
-            document.createElement("div");
-
-        card.className =
-            "restaurant-card";
+    container.innerHTML = "";
 
 
-        card.innerHTML = `
+    filteredRestaurants.forEach(
+        restaurant => {
 
-            <img
-                src="${restaurant.image}"
-                alt="${restaurant.name}"
-            >
+            const card =
+                document.createElement("div");
 
-            <div class="restaurant-info">
 
-                <h3>
-                    ${restaurant.name}
-                </h3>
+            card.className =
+                "restaurant-card";
 
-                <p>
-                    ${restaurant.cuisine}
-                </p>
 
-                <p class="rating">
-                    ⭐ ${restaurant.rating}
-                </p>
+            card.innerHTML = `
 
-                <p>
-                    🕒 ${restaurant.deliveryTime} min
-                </p>
-
-                <a
-                    href="restaurant.html?id=${restaurant.id}"
-                    class="view-menu"
+                <img
+                    src="${restaurant.image}"
+                    alt="${restaurant.name}"
                 >
-                    View Menu
-                </a>
 
-            </div>
+                <div class="restaurant-info">
 
-        `;
+                    <h2>
+                        ${restaurant.name}
+                    </h2>
+
+                    <p class="cuisine">
+                        ${restaurant.cuisine}
+                    </p>
+
+                    <div class="restaurant-meta">
+
+                        <span>
+                            ⭐ ${restaurant.rating}
+                        </span>
+
+                        <span>
+                            🕒 ${restaurant.delivery_time} mins
+                        </span>
+
+                    </div>
+
+                    <button
+                        class="view-menu-btn"
+                        onclick="viewRestaurant(${restaurant.id})"
+                    >
+                        View Menu
+                    </button>
+
+                </div>
+
+            `;
 
 
-        container.appendChild(card);
+            container.appendChild(card);
 
-    });
+        }
+    );
 
 }
 
 
-/* Search */
+// ================================
+// SEARCH
+// ================================
 
-document
-    .getElementById("restaurantSearch")
-    .addEventListener("input", function () {
-
-        const search =
-            this.value
-                .toLowerCase()
-                .trim();
+const searchInput =
+    document.getElementById(
+        "restaurantSearch"
+    );
 
 
-        const filtered =
-            restaurants.filter(restaurant => {
+if (searchInput) {
 
-                return (
+    searchInput.addEventListener(
+        "input",
+        displayRestaurants
+    );
 
-                    restaurant.name
-                        .toLowerCase()
-                        .includes(search)
-
-                    ||
-
-                    restaurant.cuisine
-                        .toLowerCase()
-                        .includes(search)
-
-                );
-
-            });
+}
 
 
-        currentRestaurants = filtered;
+// ================================
+// FILTER
+// ================================
 
-        displayRestaurants(filtered);
+function filterRestaurants(filter) {
 
-    });
-
-
-/* Filter */
-
-function filterRestaurants(type) {
-
-    let filtered;
+    currentFilter = filter;
 
 
-    if (type === "all") {
-
-        filtered = restaurants;
-
-    }
-
-    else if (type === "rating") {
-
-        filtered =
-            restaurants.filter(
-                restaurant =>
-                    restaurant.rating >= 4
-            );
-
-    }
-
-    else {
-
-        filtered =
-            restaurants.filter(
-                restaurant =>
-                    restaurant.cuisine
-                        .toLowerCase()
-                        .includes(type)
-            );
-
-    }
-
-
-    currentRestaurants = filtered;
-
-    displayRestaurants(filtered);
-
-
-    /* Active button */
+    // Remove active class
 
     document
         .querySelectorAll(".filter-btn")
         .forEach(button => {
 
-            button.classList.remove("active");
+            button.classList.remove(
+                "active"
+            );
 
         });
 
 
-    event.target.classList.add("active");
+    // Find clicked button
 
-}
-
-
-/* Sorting */
-
-document
-    .getElementById("sortRestaurants")
-    .addEventListener("change", function () {
-
-        const sortType = this.value;
+    const buttons =
+        document.querySelectorAll(
+            ".filter-btn"
+        );
 
 
-        let sorted =
-            [...currentRestaurants];
+    buttons.forEach(button => {
+
+        const text =
+            button.textContent
+                .toLowerCase();
 
 
-        if (sortType === "rating") {
+        if (
+            (filter === "all" &&
+                text.includes("all"))
 
-            sorted.sort(
-                (a, b) =>
-                    b.rating - a.rating
+            ||
+
+            (filter === "rating" &&
+                text.includes("rating"))
+
+            ||
+
+            (filter === "pizza" &&
+                text.includes("pizza"))
+
+            ||
+
+            (filter === "burger" &&
+                text.includes("burger"))
+
+            ||
+
+            (filter === "biryani" &&
+                text.includes("biryani"))
+        ) {
+
+            button.classList.add(
+                "active"
             );
 
         }
-
-
-        else if (sortType === "delivery") {
-
-            sorted.sort(
-                (a, b) =>
-                    a.deliveryTime -
-                    b.deliveryTime
-            );
-
-        }
-
-
-        displayRestaurants(sorted);
 
     });
 
 
-/* Initial Display */
+    displayRestaurants();
 
-displayRestaurants(restaurants);
+}
+
+
+// ================================
+// SORT
+// ================================
+
+const sortSelect =
+    document.getElementById(
+        "sortRestaurants"
+    );
+
+
+if (sortSelect) {
+
+    sortSelect.addEventListener(
+        "change",
+        displayRestaurants
+    );
+
+}
+
+
+// ================================
+// OPEN RESTAURANT MENU
+// ================================
+
+function viewRestaurant(id) {
+
+    window.location.href =
+        `restaurant.html?id=${id}`;
+
+}
+
+
+// ================================
+// INITIAL LOAD
+// ================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    loadRestaurants
+);
